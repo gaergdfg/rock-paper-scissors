@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const URL = 'localhost:3000';
+const URL = 'localhost:8000';
 const socket = io(URL);
 
 let mySocketId;

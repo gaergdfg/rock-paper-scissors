@@ -9,7 +9,7 @@ const io = socketio(server);
 
 
 io.on('connection', client => {
-    gameLogic.initializeGame(io, client);
+    gameLogic.initialiseGame(io, client);
 })
 
 
