@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 
-const URL = 'localhost:8000';
+const port = process.env.PORT || 8000;
+
+const URL = `localhost:${port}`;
 const socket = io(URL);
 
 let mySocketId;

@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 
 const socket = require('../connections/socket').socket;
 
+const port = process.env.PORT || 8000;
+
 
 class Game extends React.Component {
 	state = {
@@ -54,7 +56,7 @@ const GameWrapper = (props) => {
 
 
 	// get the gameId from the URL here and pass it to the chessGame component as a prop. 
-	const domainName = 'http://localhost:3000';
+	const domainName = `http://localhost:${port}`;
 	// const color = React.useContext(ColorContext);
 	const { gameid } = useParams();
 	const [opponentSocketId, setOpponentSocketId] = React.useState('');
