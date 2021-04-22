@@ -4,9 +4,7 @@
   "description": "Rock, paper, scissors game application for the Game Nexus project (https://github.com/akoszowski/Game_nexus).",
   "main": "server.js",
   "scripts": {
-    "start": "node --inspect server.js",
-    "heroku-prebuild": "npm run client:build",
-    "client:build": "cd client && npm run build"
+    "start": "node --inspect server.js"
   },
   "repository": {
     "type": "git",
