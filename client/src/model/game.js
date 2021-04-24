@@ -5,7 +5,7 @@ const socket = require('../connections/socket').socket;
 
 const port = process.env.PORT || 8000;
 const url = process.env.URL || `localhost:${port}`;
-console.log(process.env.URL);
+console.log(process.env);
 
 
 class Game extends React.Component {
