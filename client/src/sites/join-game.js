@@ -25,8 +25,8 @@ const JoinGameRoom = (gameid, userName, isHost) => {
 	};
 	socket.emit("playerJoinGame", idData);
 }
-  
-  
+
+
 const JoinGame = (props) => {
 	/**
 	 * Extract the 'gameId' from the URL. 
