@@ -40,14 +40,10 @@ class CreateNewGame extends React.Component {
 		 */
 		const newGameRoomId = uuid();
 
-		// set the state of this component with the gameId so that we can
-		// redirect the user to that URL later. 
-		this.setState({
-			gameId: newGameRoomId
-		});
-
 		// emit an event to the server to create a new room 
 		socket.emit('createNewGame', newGameRoomId);
+
+		return newGameRoomId;
 	}
 
 	typingEmail = () => {
@@ -81,16 +77,13 @@ class CreateNewGame extends React.Component {
 	}
 
 	render() {
+		console.log(this.state)
 		return (
 			<React.Fragment>
 			{
 				this.state.didGetUserName ?
-				<Redirect to = {"/game/" + this.state.gameId}>
-					<button
-						className="btn btn-success"
-						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px"}}
-					>Start Game</button> 
-				</Redirect>
+
+				<Redirect to = {"/game/" + this.state.gameId}/>
 
 			:
 
@@ -111,25 +104,31 @@ class CreateNewGame extends React.Component {
 					<button className="btn btn-primary" 
 						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}} 
 						disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)} 
-						onClick = {() => {
+						onClick = {async () => {
 							console.log('logging in');
-							axios.post(hubUrl + 'api/v1/validate/', {
-								email: this.state.inputEmail,
-								passwordHash: sha1(this.state.inputPassword)
-							}).then(response => {
-								console.log('got response:', response);
-								cookies.set('username', response.username, { path: '/' });
+							try {
+								const response = await axios.post(hubUrl + 'api/v1/validate/', {
+									email: this.state.inputEmail,
+									passwordHash: sha1(this.state.inputPassword)
+								})
+
+								console.log('got response:', response.data.username.username);
+								cookies.set('username', response.data.username.username, { path: '/' });
 								// TODO: remove this cookie right as the game ends
 								this.props.didRedirect();
-								this.props.setUserName(response.username);
+								this.props.setUserName(response.data.username.username);
+								let roomId = this.send();
+
+								// set the state of this component with the gameId so that we can
+								// redirect the user to that URL later. 
 								this.setState({
-									didGetUserName: true
+									didGetUserName: true,
+									gameId: roomId
 								});
-								this.send();
-							}).catch(err => {
+							} catch (err) {
 								alert('Invalid credentials!');
 								console.log('got error:', err);
-							})
+							}
 						}}>Submit</button>
 
 					<h1 style={{textAlign: "center", marginTop: String((window.innerHeight / 3)) + "px"}}>Play as guest:</h1>
@@ -149,10 +148,14 @@ class CreateNewGame extends React.Component {
 							// the uuid we generate here.
 							this.props.didRedirect();
 							this.props.setUserName(this.state.inputText);
+							let roomId = this.send();
+
+							// set the state of this component with the gameId so that we can
+							// redirect the user to that URL later. 
 							this.setState({
-								didGetUserName: true
+								didGetUserName: true,
+								gameId: roomId
 							});
-							this.send();
 						}}>Submit</button>
 				</div>
 			}

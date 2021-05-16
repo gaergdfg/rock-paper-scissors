@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 const socket = require('../connections/socket').socket;
 
 const port = process.env.PORT || 8000;
-const url = process.env.URL || `localhost:${port}`;
-// const url = 'https://game-nexus-rps.herokuapp.com';
+// const url = process.env.URL || `localhost:${port}`;
+const url = 'https://game-nexus-rps.herokuapp.com';
 
 
 class Game extends React.Component {

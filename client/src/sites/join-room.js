@@ -7,7 +7,7 @@ import { cookies } from '../cookie-manager';
 const axios = require('axios');
 
 
-const hubUrl = 'https://game-nexus.herokuapp.com';
+const hubUrl = 'https://game-nexus.herokuapp.com/';
 
 
 /**
@@ -96,15 +96,15 @@ class JoinRoom extends React.Component {
 								passwordHash: sha1(this.state.inputPassword)
 							}).then(response => {
 								console.log('got response:', response);
-								cookies.set('username', response.username, { path: '/' });
+								cookies.set('username', response.data.username.username, { path: '/' });
 								// TODO: remove this cookie right as the game ends
 								this.setState({
-									username: response.username,
+									username: response.data.username.username,
 									didGetUserName: true
 								});
 							}).catch(err => {
 								alert('Invalid credentials!');
-								console.log('got error:', err);
+								console.log('got error:', err.response);
 							})
 						}}>Submit</button>
 
