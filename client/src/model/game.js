@@ -3,6 +3,10 @@ import { useParams } from 'react-router-dom';
 
 const socket = require('../connections/socket').socket;
 
+const port = process.env.PORT || 8000;
+// const url = process.env.URL || `localhost:${port}`;
+const url = 'https://game-nexus-rps.herokuapp.com';
+
 
 class Game extends React.Component {
 	state = {
@@ -53,8 +57,6 @@ const GameWrapper = (props) => {
 
 
 
-	// get the gameId from the URL here and pass it to the chessGame component as a prop. 
-	const domainName = 'http://localhost:3000';
 	// const color = React.useContext(ColorContext);
 	const { gameid } = useParams();
 	const [opponentSocketId, setOpponentSocketId] = React.useState('');
@@ -144,7 +146,7 @@ const GameWrapper = (props) => {
 				onFocus={(event) => {
 					event.target.select();
 				}}
-				value = {domainName + "/game/" + gameid}
+				value = {url + "/game/" + gameid}
 				type = "text"
 				readOnly = {true}>
 				</textarea>

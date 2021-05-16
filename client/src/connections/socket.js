@@ -1,7 +1,10 @@
 import io from 'socket.io-client';
 
-const URL = 'localhost:8000';
-const socket = io(URL);
+const port = process.env.PORT || 8000;
+// const url = process.env.URL || `localhost:${port}`;
+const url = 'https://game-nexus-rps.herokuapp.com';
+
+const socket = io(url);
 
 let mySocketId;
 
