@@ -1,0 +1,65 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: rgba(216, 243, 255, 0.44);
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: #8cc8d8;
+}
+
+.field1 {
+    border-radius: 35px;
+    border: #1cbd47 6px;
+    background-color: #76d9ef;
+    padding: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.field2 {
+    border-radius: 35px;
+    border: #1cbd47 6px;
+    background-color: #e0f0ff;
+    padding: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.titlebox {
+    background-color: #bdeec7;
+    color: #7e2780;
+    text-align: center;
+}
+
+.button {
+    margin: 15px;
+    border-radius: 35px;
+    outline: #1cbd47 6px;
+    padding: 5vh;
+    background-color: #8daec7;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.desc {
+    font-size: 20px;
+    background-color: #b9e4e7;
+    border: #00398a 3px;
+    border-radius: 10px;
+    color: #6d2b6d;
+    width: 100%;
+}
+
+.scores {
+    justify-content: center;
+}
