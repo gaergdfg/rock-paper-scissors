@@ -1,11 +1,16 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import {Redirect, useParams} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import './game.css';
+import axios from 'axios';
+import { cookies } from '../cookie-manager';
 
 const socket = require('../connections/socket').socket;
 
-const port = process.env.PORT || 8000;
+// const port = process.env.PORT || 8000;
 // const url = process.env.URL || `localhost:${port}`;
 const url = 'https://game-nexus-rps.herokuapp.com';
+const hubUrl = 'https://game-nexus.herokuapp.com/';
 
 
 class Game extends React.Component {
@@ -16,32 +21,302 @@ class Game extends React.Component {
 		choiceGuest: -1,
 
 		scoreHost: 0,
-		scoreGuest: 0
+		scoreGuest: 0,
+		
+		winner: 'nobody',
+		
+		endOfGame: false
+	
 	}
 
 	componentDidMount() {
-		console.log('props:', this.props);
-		console.log(this.state);
+		this.setState({
+			isHost: this.props.isHost
+		})
+
+		socket.on("hostMove", choice => {
+			if(!this.state.isHost) {
+				this.setState({
+					choiceHost: choice
+				})
+			}
+
+			if(this.state.choiceGuest != -1 && this.state.choiceHost != -1) {
+				if(this.state.choiceGuest == this.state.choiceHost) {
+					this.setState({
+						winner: 'draw'
+					})
+				}
+				else if(this.state.choiceGuest == 1 && this.state.choiceHost == 0) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 2 && this.state.choiceHost == 1) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 0 && this.state.choiceHost == 2) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 0 && this.state.choiceHost == 1) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 1 && this.state.choiceHost == 2) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 2 && this.state.choiceHost == 0) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+
+				if(this.state.scoreHost == 3) {
+					this.setWinner();
+					//tutaj dodac do rankimgu i przejscie moze jakies.
+				}
+				if(this.state.scoreGuest == 3) {
+					this.setWinner();
+					//tutaj dodac do rankimgu i przejscie moze jakies.
+				}
+
+				this.setState({
+					choiceGuest: -1, 
+					choiceHost: -1
+				})
+			}
+		})
+		
+
+		socket.on("guestMove", choice => {
+			if(this.state.isHost) {
+				this.setState({
+					choiceGuest: choice
+				})
+			}
+
+			if(this.state.choiceGuest != -1 && this.state.choiceHost != -1) {
+				if(this.state.choiceGuest == this.state.choiceHost) {
+					this.setState({
+						winner: 'draw'
+					})
+				}
+				else if(this.state.choiceGuest == 1 && this.state.choiceHost == 0) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 2 && this.state.choiceHost == 1) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 0 && this.state.choiceHost == 2) {
+					this.setState({
+						winner: 'Guest'
+					})
+					this.setState({
+						scoreGuest: (this.state.scoreGuest + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 0 && this.state.choiceHost == 1) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 1 && this.state.choiceHost == 2) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+				else if(this.state.choiceGuest == 2 && this.state.choiceHost == 0) {
+					this.setState({
+						winner: 'Host'
+					})
+					this.setState({
+						scoreHost: (this.state.scoreHost + 1)
+					})
+				}
+
+				if(this.state.scoreHost == 3) {
+					this.setWinner();
+					//tutaj dodac do rankimgu i przejscie moze jakies.
+				}
+				if(this.state.scoreGuest == 3) {
+					this.setWinner();
+					//tutaj dodac do rankimgu i przejscie moze jakies.
+				}
+
+				this.setState({
+					choiceGuest: -1, 
+					choiceHost: -1
+				})
+			}
+		})
 	}
 
-	/**
+	setWinner() {
+		this.setState({
+			choiceGuest: -1, 
+			choiceHost: -1
+		});
+
+		if(this.state.scoreGuest == 3) {
+			window.alert(!this.state.isHost ? 'You won!' : 'You lost!');
+
+			let username = cookies.get('username');
+			if (username) {
+				axios.post(hubUrl + 'api/v1/stats', {
+					game: 'rock-paper-scissors',
+					username: username,
+					result: !this.state.isHost ? 1 : 0
+				});
+				cookies.remove('username');
+			}
+		} else if(this.state.scoreHost == 3) {
+			window.alert(this.state.isHost ? 'You won!' : 'You lost!');
+			
+			let username = cookies.get('username');
+			if (username) {
+				axios.post(hubUrl + 'api/v1/stats', {
+					game: 'rock-paper-scissors',
+					username: username,
+					result: this.state.isHost ? 1 : 0
+				});
+				cookies.remove('username');
+			}
+		}
+
+		this.setState({
+			endOfGame: true
+		});
+	}
+
+	getWinner() {
+		if (this.state.winner == 'nobody')
+			return '-----';
+
+		if (this.state.winner == 'draw')
+			return 'Nobody';
+
+		if ((this.state.winner == 'Host' && this.state.isHost) || (this.state.winner == 'Guest' && !this.state.isHost))
+			return 'You';
+		
+		return 'Opponent';
+	}
+
+	getOwnChoice() {
+		switch (this.state.isHost ? this.state.choiceHost : this.state.choiceGuest) {
+			case 0:
+				return 'Rock';
+			case 1:
+				return 'Paper';
+			case 2:
+				return 'Scissors';
+			default:
+				return '-----';
+		}
+	}
+
+	getOpponentChoice() {
+		if ((this.state.isHost && this.state.choiceGuest != -1) || (!this.state.isHost && this.state.choiceHost != -1))
+			return 'Ready';
+		
+		return 'Not ready';
+	}
+
+	render() {
+		return (
+		<React.Fragment>
+		{
+			this.state.endOfGame ?
+				<Redirect to = {'/end'}> 
+				</Redirect>
+			:
+			<div className="box">
+				<div className="row">
+					<button onClick={this.choose.bind(this, this.state.host, 0)}>rock</button>
+				</div>
+				<div className="row">
+					<button onClick={this.choose.bind(this, this.state.host, 1)}>paper</button>
+				</div>
+				<div className="row">
+					<button onClick={this.choose.bind(this, this.state.host, 2)}>scissors</button>
+				</div>
+				<div>
+					<h3>Score:</h3>
+					<output>{this.state.scoreHost} : {this.state.scoreGuest}</output>
+					<h3>Winner of the last round:</h3>
+					<output>{this.getWinner()}</output>
+				</div>
+				<div>
+					<output>Your choice: {this.getOwnChoice()}</output><br></br>
+					<output>Opponent's choice: {this.getOpponentChoice()}</output>
+				</div>
+			</div>
+		}
+		</React.Fragment>
+		)
+	}
+
+
+	/*
 	 * Passes information about player's choice to the game.
 	 * @param {boolean} isHost 
 	 * @param {0|1|2} choice (0 - rock), (1 - paper), (2 - scissors).
 	 */
 	choose(isHost, choice) {
-		if (isHost)
-			this.choiceHost = choice;
-		else
-			this.choiceGuest = choice;
-	}
-
-	render() {
-		return (
-			<div>
-				Such game, much wow.
-			</div>
-		)
+		if(this.state.endOfGam)
+			return;
+		if (isHost) {    
+			this.setState({
+				choiceHost: choice
+			})
+			socket.emit("new host move", {choice: choice, gameId: this.props.gameId});
+		}
+		else {
+			this.setState({
+				choiceGuest: choice
+			})
+			socket.emit("new guest move", {choice: choice, gameId: this.props.gameId});
+		}
 	}
 }
 
@@ -66,26 +341,21 @@ const GameWrapper = (props) => {
 
 	React.useEffect(() => {
 		socket.on("playerJoinedRoom", statusUpdate => {
-			console.log(
-				"A new player has joined the room! Username: " +
-				statusUpdate.userName + ", Game id: " + statusUpdate.gameId + " Socket id: " + statusUpdate.mySocketId
-			);
 			if (socket.id !== statusUpdate.mySocketId) {
 				setOpponentSocketId(statusUpdate.mySocketId);
 			}
 		})
 
 		socket.on("status", statusUpdate => {
-			console.log(statusUpdate);
 			alert(statusUpdate);
 			if (statusUpdate === 'This game session does not exist.' || statusUpdate === 'There are already 2 people playing in this room.') {
 				doesntExist(true);
 			}
 		})
 		
+		
 
 		socket.on('start game', (opponentUserName) => {
-			console.log("START!");
 			if (opponentUserName !== props.myUserName) {
 				setUserName(opponentUserName);
 				didJoinGame(true);
@@ -100,7 +370,6 @@ const GameWrapper = (props) => {
 
 		socket.on('give userName', (socketId) => {
 			if (socket.id !== socketId) {
-				console.log("give userName stage: " + props.myUserName);
 				socket.emit('recieved userName', {userName: props.myUserName, gameId: gameid});
 			}
 		})
@@ -108,7 +377,6 @@ const GameWrapper = (props) => {
 		socket.on('get Opponent UserName', (data) => {
 			if (socket.id !== data.socketId) {
 				setUserName(data.userName);
-				console.log('data.socketId: data.socketId');
 				setOpponentSocketId(data.socketId);
 				didJoinGame(true);
 			}
@@ -122,7 +390,7 @@ const GameWrapper = (props) => {
 			<div>
 			<h4> Opponent: {opponentUserName} </h4>
 			<div style={{ display: "flex" }}>
-				<Game gameId={gameid}/>
+				<Game gameId={gameid} isHost={props.isHost}/>
 			</div>
 			<h4> You: {props.myUserName} </h4>
 			</div>

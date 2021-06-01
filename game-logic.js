@@ -10,8 +10,10 @@ const initialiseGame = (sio, socket) => {
 	gameSessions.push(gameSocket);
 
 	gameSocket.on('createNewGame', createNewGame);
-
-	gameSocket.on('new move', newMove);
+	
+	gameSocket.on('new host move', newHostMove);
+	
+	gameSocket.on('new guest move', newGuestMove);
 
 	gameSocket.on('disconnect', onDisconnect);
 
@@ -30,7 +32,7 @@ function createNewGame(gameId) {
     this.join(gameId);
 }
 
-function newMove(move) {
+function newHostMove(move) {
     /**
      * First, we need to get the room ID in which to send this message. 
      * Next, we actually send this message to everyone except the sender
@@ -38,7 +40,18 @@ function newMove(move) {
      */
     const gameId = move.gameId;
     
-    io.to(gameId).emit('opponent move', move);
+    io.to(gameId).emit('hostMove', move.choice);
+}
+
+function newGuestMove(move) {
+    /**
+     * First, we need to get the room ID in which to send this message. 
+     * Next, we actually send this message to everyone except the sender
+     * in this room. 
+     */
+    const gameId = move.gameId;
+    
+    io.to(gameId).emit('guestMove', move.choice);
 }
 
 function playerJoinsGame(idData) {
@@ -51,7 +64,6 @@ function playerJoinsGame(idData) {
 
 	// Look up the room ID in the Socket.IO manager object.
 	var room = io.sockets.adapter.rooms[idData.gameId];
-	// console.log(room)
 
 	// If the room exists...
 	if (room === undefined) {
@@ -64,8 +76,6 @@ function playerJoinsGame(idData) {
 
 		// Join the room
 		sock.join(idData.gameId);
-
-		console.log(room.length);
 
 		if (room.length === 2) {
 			io.sockets.in(idData.gameId).emit('start game', idData.userName);
