@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 import { useHistory } from "react-router-dom";
-import styles from './game.css';
+import './game.css';
 import axios from 'axios';
 import { cookies } from '../cookie-manager';
 
@@ -270,17 +270,17 @@ class Game extends React.Component {
 		<React.Fragment>
 		{
 			this.state.endOfGame ?
-				<Redirect to = {"https://game-nexus.herokuapp.com/"}> 
+				<Redirect to = {'/end'}> 
 				</Redirect>
 			:
-			<div className={styles.box}>
-				<div className={styles.row}>
+			<div className="box">
+				<div className="row">
 				<button onClick={this.choose.bind(this, this.state.host, 0)}>rock</button>
 				</div>
-				<div className={styles.row}>
+				<div className="row">
 				<button onClick={this.choose.bind(this, this.state.host, 1)}>paper</button>
 				</div>
-				<div className={styles.row}>
+				<div className="row">
 				<button onClick={this.choose.bind(this, this.state.host, 2)}>scissors</button>
 				</div>
 				Host:

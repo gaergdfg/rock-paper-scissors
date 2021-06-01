@@ -5,6 +5,12 @@ import { ColorContext } from './context/color-context'
 import Main from './sites/main'
 import JoinGame from './sites/join-game'
 import Game from './model/game'
+import SingleRPS from './singleRPS/SingleRPS'
+import Rock from './singleRPS/rock'
+import Scissors from './singleRPS/scissors'
+import Paper from './singleRPS/paper'
+
+const hubUrl = 'https://game-nexus.herokuapp.com/';
 
 /*
  *  Frontend flow: 
@@ -50,6 +56,30 @@ function App() {
 	<ColorContext.Provider value = {{didRedirect: didRedirect, playerDidRedirect: playerDidRedirect, playerDidNotRedirect: playerDidNotRedirect}}>
 		<Router>
 		<Switch>
+			<Route path = "/single" exact>
+				<SingleRPS
+				 userName = {userName}
+				>
+				</SingleRPS>
+			</Route>
+			<Route path = "/rock" exact>
+				<Rock
+				 userName = {userName}
+				>
+				</Rock>
+			</Route>
+			<Route path = "/paper" exact>
+				<Paper
+				 userName = {userName}
+				>
+				</Paper>
+			</Route>
+			<Route path = "/scissors" exact>
+				<Scissors
+				 userName = {userName}
+				>
+				</Scissors>
+			</Route>
 			<Route path = "/" exact>
 				<Main setUserName = {setUserName}/>
 			</Route>
@@ -61,6 +91,10 @@ function App() {
 				</React.Fragment>
 				:
 				<JoinRoom />}
+			</Route>
+			<Route path = "/end" exact>
+				<div>Thanks for playing rock-paper-scissors</div>
+				<a href={hubUrl}>Back to hub</a>
 			</Route>
 			<Redirect to = "/" />
 		</Switch>
