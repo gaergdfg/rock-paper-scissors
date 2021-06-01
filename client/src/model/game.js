@@ -140,8 +140,28 @@ class Game extends React.Component {
 						scoreHost: (this.state.scoreHost + 1)
 					})
 				}
-				
-				window.alert("the winner is " + this.state.winner);
+				if(this.state.host) {
+					if(this.state.winner == 'draw') {
+						window.alert("Draw");
+					}
+					else if(this.state.winner == 'Host') {
+						window.alert("You win");
+					}
+					else {
+						window.alert("You lose");
+					}
+				}  
+				else {
+					if(this.state.winner == 'draw') {
+						window.alert("Draw");
+					}
+					else if(this.state.winner == 'Host') {
+						window.alert("You lose");
+					}
+					else {
+						window.alert("You win");
+					}
+				}
 				console.log(this.state.scoreHost)
 				if(this.state.scoreHost == 3) {
 					console.log("koniec!!!");
@@ -235,7 +255,28 @@ class Game extends React.Component {
 						scoreHost: (this.state.scoreHost + 1)
 					})
 				}
-				window.alert("the winner is " + this.state.winner);
+				if(this.state.host) {
+					if(this.state.winner == 'draw') {
+						window.alert("Draw");
+					}
+					else if(this.state.winner = 'Host') {
+						window.alert("You win");
+					}
+					else {
+						window.alert("You lose");
+					}
+				}  
+				else {
+					if(this.state.winner == 'draw') {
+						window.alert("Draw");
+					}
+					else if(this.state.winner = 'Host') {
+						window.alert("You lose");
+					}
+					else {
+						window.alert("You win");
+					}
+				}
 				console.log(this.state.scoreHost)
 				if(this.state.scoreHost == 3) {
 					console.log("koniec!!!");
