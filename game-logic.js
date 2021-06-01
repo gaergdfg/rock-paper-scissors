@@ -64,7 +64,6 @@ function playerJoinsGame(idData) {
 
 	// Look up the room ID in the Socket.IO manager object.
 	var room = io.sockets.adapter.rooms[idData.gameId];
-	// console.log(room)
 
 	// If the room exists...
 	if (room === undefined) {
@@ -77,8 +76,6 @@ function playerJoinsGame(idData) {
 
 		// Join the room
 		sock.join(idData.gameId);
-
-		console.log(room.length);
 
 		if (room.length === 2) {
 			io.sockets.in(idData.gameId).emit('start game', idData.userName);

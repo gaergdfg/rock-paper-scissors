@@ -104,16 +104,13 @@ class CreateNewGame extends React.Component {
 						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}} 
 						disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)} 
 						onClick = {async () => {
-							console.log('logging in');
 							try {
 								const response = await axios.post(hubUrl + 'api/v1/validate/', {
 									email: this.state.inputEmail,
 									passwordHash: sha1(this.state.inputPassword)
 								})
 
-								console.log('got response:', response.data.username.username);
 								cookies.set('username', response.data.username.username, { path: '/' });
-								// TODO: remove this cookie right as the game ends
 								this.props.didRedirect();
 								this.props.setUserName(response.data.username.username);
 								let roomId = this.send();

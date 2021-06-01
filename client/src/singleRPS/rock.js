@@ -2,18 +2,15 @@ import React, { useEffect, useState, } from "react";
 import { Redirect } from 'react-router-dom';
 
 function getR() {
-	console.log("musi smigac");
 	return Math.floor(Math.random() * (2 + 1));
 }
 
 
 var comp = getR();
-console.log(comp);
 var computerChoose = "rock";
 var out = "It's a draw!";
 
 function getRandomIntInclusive() {
-	console.log("SZK" + comp);
 	if(comp == 0) {
 	computerChoose = "paper";
 }

@@ -90,14 +90,11 @@ class JoinRoom extends React.Component {
 						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}} 
 						disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)} 
 						onClick = {() => {
-							console.log('logging in');
 							axios.post(hubUrl + 'api/v1/validate/', {
 								email: this.state.inputEmail,
 								passwordHash: sha1(this.state.inputPassword)
 							}).then(response => {
-								console.log('got response:', response);
 								cookies.set('username', response.data.username.username, { path: '/' });
-								// TODO: remove this cookie right as the game ends
 								this.setState({
 									username: response.data.username.username,
 									didGetUserName: true
