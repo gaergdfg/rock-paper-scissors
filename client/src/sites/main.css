@@ -9,7 +9,9 @@
         max-width: 320px;
     }
 
-
+    .bg{
+        background-color: rgba(77, 129, 128, 0.51);
+    }
 
     .btn{
         background-color: var(--darkBlue);
@@ -31,11 +33,9 @@
         border-radius: 25px;
 
         color: var(--darkBlue);
-
-        align-self: center;
         text-align: center;
         vertical-align: center;
-        margin: 15px;
+        margin: auto;
     }
 
     .option{

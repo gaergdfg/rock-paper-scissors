@@ -4,20 +4,22 @@ import { useHistory } from "react-router-dom";
 import './game.css';
 import '../App.css';
 import axios from 'axios';
-import { cookies } from '../cookie-manager'
+import { cookies } from '../cookie-manager';
 
-import rock from '../img/rocktheme.png'
-import paper from '../img/papertheme.png'
-import scissors from '../img/scissorstheme.png'
+import rock from '../img/rocktheme.png';
+import paper from '../img/papertheme.png';
+import scissors from '../img/scissorstheme.png';
+
 import {Button, Col, Container, Row} from "reactstrap";
 
 const socket = require('../connections/socket').socket;
 
 // const port = process.env.PORT || 8000;
 // const url = process.env.URL || `localhost:${port}`;
+//const url = 'localhost:8000';
 const url = 'https://game-nexus-rps.herokuapp.com';
-const hubUrl = 'https://game-nexus.herokuapp.com/';
 
+const hubUrl = 'https://game-nexus.herokuapp.com/';
 
 class Game extends React.Component {
 	state = {
@@ -240,7 +242,7 @@ class Game extends React.Component {
 			return '-----';
 
 		if (this.state.winner == 'draw')
-			return 'Nobody';
+			return 'It was a draw';
 
 		if ((this.state.winner == 'Host' && this.state.isHost) || (this.state.winner == 'Guest' && !this.state.isHost))
 			return 'You';
@@ -263,9 +265,9 @@ class Game extends React.Component {
 
 	getOpponentChoice() {
 		if ((this.state.isHost && this.state.choiceGuest != -1) || (!this.state.isHost && this.state.choiceHost != -1))
-			return 'Ready';
+			return '<is waiting for you.';
 		
-		return 'Not ready';
+		return 'is not ready yet';
 	}
 
 	render() {
@@ -278,11 +280,11 @@ class Game extends React.Component {
 			:
 
 				<Container>
-					<Row xs={12}>
-						<h1>Rock, Paper, Scissors!</h1>
-					</Row>
-					<Row>
-
+					<Row className="box">
+						<h4>Score:</h4>
+						<h1 className="score"> <output>{this.state.scoreHost} : {this.state.scoreGuest}</output> </h1>
+						<h4>Winner of the last round:</h4>
+						<output>{this.getWinner()}</output>
 					</Row>
 					<Row className="buttons">
 						<Col> <Button onClick={this.choose.bind(this, this.state.host, 0)}><img src={rock} /></Button> </Col>
@@ -290,36 +292,16 @@ class Game extends React.Component {
 						<Col> <Button onClick={this.choose.bind(this, this.state.host, 2)}><img src={scissors} /></Button> </Col>
 
 					</Row>
-					<div className="box">
-						<div className="col">
-							<button onClick={this.choose.bind(this, this.state.host, 0)}>rock</button>
-						</div>
-						<div className="col">
-							<button onClick={this.choose.bind(this, this.state.host, 1)}>paper</button>
-						</div>
-						<div className="col">
-							<button onClick={this.choose.bind(this, this.state.host, 2)}>scissors</button>
-						</div>
-						<div>
-							<h3>Score:</h3>
-							<output>{this.state.scoreHost} : {this.state.scoreGuest}</output>
-							<h3>Winner of the last round:</h3>
-							<output>{this.getWinner()}</output>
-						</div>
-						<div>
-							<output>Your choice: {this.getOwnChoice()}</output><br></br>
-							<output>Opponent's choice: {this.getOpponentChoice()}</output>
-						</div>
-					</div>
+					<Row className="box">
+
+						<Col> <output>Your choice: {this.getOwnChoice()}</output> </Col>
+						<Col> <output>Opponent currently {this.getOpponentChoice()}</output> </Col>
+					</Row>
 				</Container>
-
-
-
-
 		}
 		</React.Fragment>
-		)
-	}
+		);
+	};
 
 
 	/*
@@ -412,32 +394,30 @@ const GameWrapper = (props) => {
 	return (
 		<React.Fragment>
 		{opponentDidJoinTheGame ? (
-				<div className="bg">
-					<div className="row">
-						<div className="col playername">
+				<Col className="bg">
+					<Row>
+						<Col className="playername">
 							<div className="you">
 								<h4> You: </h4>
 								<h2>{props.myUserName} </h2>
 							</div>
-						</div>
+						</Col>
 
-						<div className="col">
-							<div align="center"> vs </div>
-						</div>
+						<Col xs={1} md={1}>
+							<div align="center"> <h1>vs</h1></div>
+						</Col>
 
-						<div className="col playername">
+						<Col className="playername">
 							<div className="opponent">
 								<h4>Opponent:</h4>
 								<h2>{opponentUserName}</h2>
 							</div>
-						</div>
-					</div>
+						</Col>
+					</Row>
 					<div className="row">
-						<div style={{ display: "flex" }}>
 							<Game gameId={gameid} isHost={props.isHost}/>
-						</div>
 					</div>
-				</div>
+				</Col>
 		) : gameSessionDoesNotExist ? (
 			<div>
 			<h1 style={{ textAlign: "center", marginTop: "200px" }}> :( </h1>

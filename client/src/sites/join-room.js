@@ -4,6 +4,7 @@ import Game from '../model/game';
 import sha1 from 'sha1';
 import { cookies } from '../cookie-manager';
 import {Button, Col, Container, Form, FormGroup, FormLabel, Row} from "react-bootstrap";
+import './main.css'
 
 const axios = require('axios');
 
@@ -74,11 +75,12 @@ class JoinRoom extends React.Component {
 				</React.Fragment>
 			:
 				<div className="bg">
-					<div className="inputfield">
-						<h1>Rock, Paper, Scissors</h1>
-					</div>
-
-					<Container className="field">
+					<Container>
+						<Row>
+							<div className="inputfield">
+								<h1>Rock, Paper, Scissors</h1>
+							</div>
+						</Row>
 						<Row>
 							<Col className="option" xs={12} md={5}>
 								<Form className="login-form">
@@ -86,10 +88,10 @@ class JoinRoom extends React.Component {
 
 									<FormGroup>
 										<FormLabel> email:</FormLabel>
-									<input
-										placeholder="Email"
-										ref={this.email}
-										onInput={this.typingEmail}></input>
+										<input
+											placeholder="Email"
+											ref={this.email}
+											onInput={this.typingEmail}></input>
 									</FormGroup>
 									<FormGroup>
 										<FormLabel> password:</FormLabel>
@@ -99,9 +101,7 @@ class JoinRoom extends React.Component {
 											placeholder="Password"
 											onInput={this.typingPassword}></input>
 									</FormGroup>
-
-									<Button className="btn btn-primary"
-											style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}}
+									<Button className="btn btn-primary btn-block"
 											disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)}
 											onClick = {() => {
 												axios.post(hubUrl + 'api/v1/validate/', {
@@ -117,10 +117,9 @@ class JoinRoom extends React.Component {
 													alert('Invalid credentials!');
 													console.log('got error:', err.response);
 												})
-											}}>Submit</Button>
+											}}>Log in</Button>
 								</Form>
 							</Col>
-
 							<Col className="option" xs={12} md={5}>
 								<Form className="login-form">
 									<h4>Play as guest:</h4>
@@ -132,7 +131,7 @@ class JoinRoom extends React.Component {
 											ref = {this.textArea}
 											onInput = {this.typingUserName}></input>
 									</FormGroup>
-									<button className="btn btn-primary"
+									<Button className="btn btn-primary btn-block"
 											disabled = {!(this.state.inputText.length > 0)}
 											onClick = {() => {
 												// When the 'Submit' button gets pressed from the username screen,
@@ -142,12 +141,14 @@ class JoinRoom extends React.Component {
 													username: this.state.inputText,
 													didGetUserName: true
 												})
-											}}>Submit</button>
+											}}>Submit</Button>
 								</Form>
 							</Col>
-
 						</Row>
 					</Container>
+
+
+
 				</div>
 			}
 			</React.Fragment>

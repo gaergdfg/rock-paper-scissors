@@ -14,8 +14,10 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    background-color: #8cc8d8;
+    background-color: var(--textblue);
 }
+
+
 
 .field1 {
     border-radius: 35px;
@@ -35,6 +37,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.score{
+    color: #8d0007;
+    font-size: xxx-large;
 }
 
 .titlebox {
@@ -72,6 +79,7 @@
 .playername {
     background-color: var(--darkBlue);
     color: var(--textgreen);
+    padding: 20px;
 }
 
 .center {
@@ -88,4 +96,5 @@
 
 .buttons {
     justify-content: center;
+    background-color: var(--darkBlue);
 }
