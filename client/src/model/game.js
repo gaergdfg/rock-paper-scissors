@@ -2,8 +2,14 @@ import React from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import './game.css';
+import '../App.css';
 import axios from 'axios';
-import { cookies } from '../cookie-manager';
+import { cookies } from '../cookie-manager'
+
+import rock from '../img/rocktheme.png'
+import paper from '../img/papertheme.png'
+import scissors from '../img/scissorstheme.png'
+import {Button, Col, Container, Row} from "reactstrap";
 
 const socket = require('../connections/socket').socket;
 
@@ -270,27 +276,46 @@ class Game extends React.Component {
 				<Redirect to = {'/end'}> 
 				</Redirect>
 			:
-			<div className="box">
-				<div className="row">
-					<button onClick={this.choose.bind(this, this.state.host, 0)}>rock</button>
-				</div>
-				<div className="row">
-					<button onClick={this.choose.bind(this, this.state.host, 1)}>paper</button>
-				</div>
-				<div className="row">
-					<button onClick={this.choose.bind(this, this.state.host, 2)}>scissors</button>
-				</div>
-				<div>
-					<h3>Score:</h3>
-					<output>{this.state.scoreHost} : {this.state.scoreGuest}</output>
-					<h3>Winner of the last round:</h3>
-					<output>{this.getWinner()}</output>
-				</div>
-				<div>
-					<output>Your choice: {this.getOwnChoice()}</output><br></br>
-					<output>Opponent's choice: {this.getOpponentChoice()}</output>
-				</div>
-			</div>
+
+				<Container>
+					<Row xs={12}>
+						<h1>Rock, Paper, Scissors!</h1>
+					</Row>
+					<Row>
+
+					</Row>
+					<Row className="buttons">
+						<Col> <Button onClick={this.choose.bind(this, this.state.host, 0)}><img src={rock} /></Button> </Col>
+						<Col> <Button onClick={this.choose.bind(this, this.state.host, 1)}><img src={paper} /></Button> </Col>
+						<Col> <Button onClick={this.choose.bind(this, this.state.host, 2)}><img src={scissors} /></Button> </Col>
+
+					</Row>
+					<div className="box">
+						<div className="col">
+							<button onClick={this.choose.bind(this, this.state.host, 0)}>rock</button>
+						</div>
+						<div className="col">
+							<button onClick={this.choose.bind(this, this.state.host, 1)}>paper</button>
+						</div>
+						<div className="col">
+							<button onClick={this.choose.bind(this, this.state.host, 2)}>scissors</button>
+						</div>
+						<div>
+							<h3>Score:</h3>
+							<output>{this.state.scoreHost} : {this.state.scoreGuest}</output>
+							<h3>Winner of the last round:</h3>
+							<output>{this.getWinner()}</output>
+						</div>
+						<div>
+							<output>Your choice: {this.getOwnChoice()}</output><br></br>
+							<output>Opponent's choice: {this.getOpponentChoice()}</output>
+						</div>
+					</div>
+				</Container>
+
+
+
+
 		}
 		</React.Fragment>
 		)
@@ -387,13 +412,32 @@ const GameWrapper = (props) => {
 	return (
 		<React.Fragment>
 		{opponentDidJoinTheGame ? (
-			<div>
-			<h4> Opponent: {opponentUserName} </h4>
-			<div style={{ display: "flex" }}>
-				<Game gameId={gameid} isHost={props.isHost}/>
-			</div>
-			<h4> You: {props.myUserName} </h4>
-			</div>
+				<div className="bg">
+					<div className="row">
+						<div className="col playername">
+							<div className="you">
+								<h4> You: </h4>
+								<h2>{props.myUserName} </h2>
+							</div>
+						</div>
+
+						<div className="col">
+							<div align="center"> vs </div>
+						</div>
+
+						<div className="col playername">
+							<div className="opponent">
+								<h4>Opponent:</h4>
+								<h2>{opponentUserName}</h2>
+							</div>
+						</div>
+					</div>
+					<div className="row">
+						<div style={{ display: "flex" }}>
+							<Game gameId={gameid} isHost={props.isHost}/>
+						</div>
+					</div>
+				</div>
 		) : gameSessionDoesNotExist ? (
 			<div>
 			<h1 style={{ textAlign: "center", marginTop: "200px" }}> :( </h1>
