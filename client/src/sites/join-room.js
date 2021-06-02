@@ -3,8 +3,6 @@ import JoinGame from './join-game';
 import Game from '../model/game';
 import sha1 from 'sha1';
 import { cookies } from '../cookie-manager';
-import {Button, Col, Container, Form, FormGroup, FormLabel, Row} from "react-bootstrap";
-import './main.css'
 
 const axios = require('axios');
 
@@ -74,81 +72,59 @@ class JoinRoom extends React.Component {
 					<Game myUserName = {this.state.username} isHost = {false}/>
 				</React.Fragment>
 			:
-				<div className="bg">
-					<Container>
-						<Row>
-							<div className="inputfield">
-								<h1>Rock, Paper, Scissors</h1>
-							</div>
-						</Row>
-						<Row>
-							<Col className="option" xs={12} md={5}>
-								<Form className="login-form">
-									<h4>Log in</h4>
+				<div>
+					<h1 style={{textAlign: "center", marginTop: String((window.innerHeight / 3)) + "px"}}>Log in:</h1>
 
-									<FormGroup>
-										<FormLabel> email:</FormLabel>
-										<input
-											placeholder="Email"
-											ref={this.email}
-											onInput={this.typingEmail}></input>
-									</FormGroup>
-									<FormGroup>
-										<FormLabel> password:</FormLabel>
-										<input
-											ref={this.password}
-											type="password"
-											placeholder="Password"
-											onInput={this.typingPassword}></input>
-									</FormGroup>
-									<Button className="btn btn-primary btn-block"
-											disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)}
-											onClick = {() => {
-												axios.post(hubUrl + 'api/v1/validate/', {
-													email: this.state.inputEmail,
-													passwordHash: sha1(this.state.inputPassword)
-												}).then(response => {
-													cookies.set('username', response.data.username.username, { path: '/' });
-													this.setState({
-														username: response.data.username.username,
-														didGetUserName: true
-													});
-												}).catch(err => {
-													alert('Invalid credentials!');
-													console.log('got error:', err.response);
-												})
-											}}>Log in</Button>
-								</Form>
-							</Col>
-							<Col className="option" xs={12} md={5}>
-								<Form className="login-form">
-									<h4>Play as guest:</h4>
+					<input
+						style={{marginLeft: String((window.innerWidth / 2) - 120) + "px", width: "240px", marginTop: "62px"}} 
+						ref={this.email}
+						onInput={this.typingEmail}></input>
 
-									<FormGroup>
-										<FormGroup>Choose nick:</FormGroup>
-										<input
-											placeholder="nick"
-											ref = {this.textArea}
-											onInput = {this.typingUserName}></input>
-									</FormGroup>
-									<Button className="btn btn-primary btn-block"
-											disabled = {!(this.state.inputText.length > 0)}
-											onClick = {() => {
-												// When the 'Submit' button gets pressed from the username screen,
-												// We should send a request to the server to create a new room with
-												// the uuid we generate here.
-												this.setState({
-													username: this.state.inputText,
-													didGetUserName: true
-												})
-											}}>Submit</Button>
-								</Form>
-							</Col>
-						</Row>
-					</Container>
+					<input
+						style={{marginLeft: String((window.innerWidth / 2) - 120) + "px", width: "240px", marginTop: "62px"}} 
+						ref={this.password}
+						type="password"
+						onInput={this.typingPassword}></input>
+
+					<button className="btn btn-primary" 
+						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}} 
+						disabled = {!(this.state.inputEmail.length > 0 && this.state.inputPassword.length > 0)} 
+						onClick = {() => {
+							axios.post(hubUrl + 'api/v1/validate/', {
+								email: this.state.inputEmail,
+								passwordHash: sha1(this.state.inputPassword)
+							}).then(response => {
+								cookies.set('username', response.data.username.username, { path: '/' });
+								this.setState({
+									username: response.data.username.username,
+									didGetUserName: true
+								});
+							}).catch(err => {
+								alert('Invalid credentials!');
+								console.log('got error:', err.response);
+							})
+						}}>Submit</button>
 
 
+					<h1 style={{textAlign: "center", marginTop: String((window.innerHeight / 3)) + "px"}}>Play as guest:</h1>
 
+					<input
+						style={{marginLeft: String((window.innerWidth / 2) - 120) + "px", width: "240px", marginTop: "62px"}} 
+						ref = {this.textArea}
+						onInput = {this.typingUserName}></input>
+
+					<button className="btn btn-primary" 
+						style = {{marginLeft: String((window.innerWidth / 2) - 60) + "px", width: "120px", marginTop: "62px"}} 
+						disabled = {!(this.state.inputText.length > 0)} 
+						onClick = {() => {
+							// When the 'Submit' button gets pressed from the username screen,
+							// We should send a request to the server to create a new room with
+							// the uuid we generate here.
+							this.setState({
+								username: this.state.inputText,
+								didGetUserName: true
+							})
+						}}>Submit</button>
 				</div>
 			}
 			</React.Fragment>
