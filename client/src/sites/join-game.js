@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import './main.css'
 
 const socket  = require('../connections/socket').socket;
 
@@ -35,8 +36,8 @@ const JoinGame = (props) => {
 	const { gameid } = useParams();
 	JoinGameRoom(gameid, props.userName, props.isHost);
 
-	return <div>
-		<h1 style = {{textAlign: "center"}}>Rock, paper, scissors</h1>
+	return 	<div className="inputfield">
+		<h1>Rock, Paper, Scissors!</h1>
 	</div>
 }
 

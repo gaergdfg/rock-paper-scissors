@@ -1,5 +1,27 @@
+body{
+  --mainBlue: rgb(47, 70, 75);
+  --vibrantGreen: #26a037;
+  --paleblue: #4d8180;
+  --lightblue: #94cbca;
+  --darkBlue: #103948;
+  --darkGreen: #17560e;
+  --inactiveGray: #515455;
+
+  --textblue: #2e8a99;
+  --textgreen: #5cbd6b;
+  --textwrong: #5f2222;
+
+  background-image: url('img/rpsbg.jpg');
+
+  background-color: #2f464b;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .App {
   text-align: center;
+
 }
 
 .App-logo {

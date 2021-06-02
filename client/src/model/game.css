@@ -2,7 +2,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    background-color: rgba(216, 243, 255, 0.44);
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
 }
 
 .box {
@@ -10,8 +14,10 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    background-color: #8cc8d8;
+    background-color: var(--textblue);
 }
+
+
 
 .field1 {
     border-radius: 35px;
@@ -31,6 +37,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.score{
+    color: #8d0007;
+    font-size: xxx-large;
 }
 
 .titlebox {
@@ -62,4 +73,28 @@
 
 .scores {
     justify-content: center;
+}
+
+
+.playername {
+    background-color: var(--darkBlue);
+    color: var(--textgreen);
+    padding: 20px;
+}
+
+.center {
+    text-align: center;
+}
+
+.you {
+    text-align: left;
+}
+
+.opponent {
+    text-align: right;
+}
+
+.buttons {
+    justify-content: center;
+    background-color: var(--darkBlue);
 }
